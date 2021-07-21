@@ -1,5 +1,5 @@
 import { Telegraf } from 'vendor/telegraf'
-const BOT_TOKEN = '1949885986:AAG5zUhTFDROMpfwprA1Tt2d4CzzFRnf4eA'
+const BOT_TOKEN = ''
 const bot = new Telegraf(BOT_TOKEN)
 
 bot.command('quit', (ctx) => {
