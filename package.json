@@ -1,0 +1,30 @@
+{
+  "name": "tgchatbot",
+  "version": "3.0.0",
+  "description": "Универсальный движок чат-ботов в Телеграм",
+  "main": "bot.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamesfirstv/tgchatbot.git"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "framework"
+  ],
+  "author": "James",
+  "license": "GPL-2.0-only",
+  "bugs": {
+    "url": "https://github.com/jamesfirstv/tgchatbot/issues"
+  },
+  "homepage": "https://github.com/jamesfirstv/tgchatbot#readme",
+  "dependencies": {
+    "telegraf": "^4.4.0"
+  }
+}
