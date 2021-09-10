@@ -1,4 +1,5 @@
 access.log
 config.json
+config-*
 mod/*
 tls/*
