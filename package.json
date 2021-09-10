@@ -2,7 +2,7 @@
   "name": "tgchatbot",
   "version": "3.0.0",
   "description": "Универсальный движок чат-ботов в Телеграм",
-  "main": "bot.js",
+  "main": "main.js",
   "directories": {
     "lib": "lib"
   },

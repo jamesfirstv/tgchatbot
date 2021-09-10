@@ -15,29 +15,29 @@
 //**********
 
 // Загрузка библиотек
-var g       = {} /// Корень дерева глобального реестра 
+var g       = {} /// Корень дерева глобального реестра
 g.l         = {} // Ветка библиотек
-g.l.fs      = require('lib/fs.js') // Коллекция функций файловой системы
-g.l.math    = require('lib/math.js') // Коллекция полезных для движка метематических функций и функций форматирования
-g.l.Log     = require('lib/Log.js') // Класс логгера
-g.l.Error   = require('lib/Error.js') // Класс ошибок
-g.l.Config  = require('lib/Config.js') // Класс конфигурации
-g.l.db      = require('lib/db.js') // Коллекция функций для работы с базами данных
-g.l.ton     = require('lib/ton.js') // Коллекция функций для работы с сетью Telegram
+g.l.fs      = require('./lib/fs.js') // Коллекция функций файловой системы
+g.l.math    = require('./lib/math.js') // Коллекция полезных для движка метематических функций и функций форматирования
+g.l.Log     = require('./lib/Log.js') // Класс логгера
+g.l.Error   = require('./lib/Error.js') // Класс ошибок
+g.l.Config  = require('./lib/Config.js') // Класс конфигурации
+g.l.db      = require('./lib/db.js') // Коллекция функций для работы с базами данных
+g.l.ton     = require('./lib/ton.js') // Коллекция функций для работы с сетью Telegram
 // Здесь контекст времени выполнения плавно переходит от запуска/остановки
 // серверного демона на время диалога с юзером бота, и в следующих файлах везде
 // речь только про диалог
-g.l.DpcCall = require('lib/DpcCall.js') // Класс отложенной процедуры
-g.l.dpc     = require('lib/dpc.js') // Коллекция функций для работы с массивами отложенных процедур
-g.l.In      = require('lib/In.js') // Единая унифицированная точка входа сообщений от Телеграма
-g.l.Btn     = require('lib/Btn.js') // Класс кнопки
-g.l.Kbd     = require('lib/Kbd.js') // Класс клавиатуры
-g.l.Bread   = require('lib/Bread.js') // Класс хлебных крошек
-g.l.d       = require('lib/d.js') // Коллекция функций используемых при возврате управления из сюжета в движок
-g.l.Cat     = require('lib/Cat.js') // Класс каталога кнопок
+g.l.DpcCall = require('./lib/DpcCall.js') // Класс отложенной процедуры
+g.l.dpc     = require('./lib/dpc.js') // Коллекция функций для работы с массивами отложенных процедур
+g.l.In      = require('./lib/In.js') // Единая унифицированная точка входа сообщений от Телеграма
+g.l.Btn     = require('./lib/Btn.js') // Класс кнопки
+g.l.Kbd     = require('./lib/Kbd.js') // Класс клавиатуры
+g.l.Bread   = require('./lib/Bread.js') // Класс хлебных крошек
+g.l.d       = require('./lib/d.js') // Коллекция функций используемых при возврате управления из сюжета в движок
+g.l.Cat     = require('./lib/Cat.js') // Класс каталога кнопок
 
 // Запуск
-g.config  = new g.l.Config(g, g.l.fs.loadConfig(g, 'config.json')) // Загрузка конфига (имеем в наличии настройки поумолчанию)
+g.config  = new g.l.Config(g, g.l.fs.loadConfig(g, './config.json')) // Загрузка конфига (имеем в наличии настройки поумолчанию)
 g.lang    = g.l.fs.loadLang(g) // Загрузка языка (то есть русского, т.к. он поумолчанию, а конфиг мы ещё не проверили на ошибки, но нам уже нужен язык)
 g.m       = g.l.fs.loadMod(g) // Загрузка сюжетных модулей
 g.log     = new g.l.Log(g) // Создаём логгер
@@ -48,9 +48,13 @@ g.bot     = g.l.ton.startBot(g) // Подключение к сети Telegram
 g.log.info(g.lang.tgchatbot.main['start']) // Бот готов к работе
 
 // Остановка
-stop(sig) {
+function stop(sig) {
   g.l.ton.stop(g, sig)
   g.l.db.close(g)
+  setTimeout((g)=>{
+    g.log.info(g.lang.tgchatbot.main['stop']) // Бот остановлен
+    setTimeout(()=>{process.exit(0)}, 10) // Таймаут на закрытие файла логов 0.01c
+  }, 100, g) // Таймаут на закрытие БД 0.1c
 }
-process.once('SIGINT', stop('SIGINT'))
-process.once('SIGTERM', stop('SIGTERM'))
+process.once('SIGINT', ()=>{stop('SIGINT')})
+process.once('SIGTERM', ()=>{stop('SIGTERM')})
